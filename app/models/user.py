@@ -28,9 +28,13 @@ class User(UserMixin ,db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    def has_permission(self, perm):
+        if self.role is None:
+            return False
+        return self.role.has_permission(perm)
+    
     def __repr__(self):
         return f"<User {self.username}>"
-
 
 
 class AnonymousUser(AnonymousUserMixin):

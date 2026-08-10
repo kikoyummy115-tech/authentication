@@ -11,7 +11,7 @@ def test_create_user():
     assert user.verify_password('password') is True
     assert user.password_hash is not None
     assert user.role is None  # Assuming no role is assigned by default
-    assert user.password_hash != 'password'  # Ensure password is hashed
+    assert user.password_hash != 'password'  #Ensure password is hashed
 
 def test_create_role():
     role = Role(name='admin')

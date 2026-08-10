@@ -1,7 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 from flask_login import login_required
-from app.decorator import permissions_required
 
+from app.decorator import permission_required
 
 main = Blueprint('main', __name__)
 
@@ -9,8 +9,7 @@ main = Blueprint('main', __name__)
 @login_required
 def dashboard():
     "Display the user's dashboard"
-    return "Hello, World!"
-
+    return render_template('dashboard.html')
 
 @main.route('/settings')
 @login_required
@@ -21,7 +20,7 @@ def settings():
 
 @main.route('/admin')
 @login_required
-@permissions_required('admin')
+@permission_required(['admin', 'superuser'])
 def admin():
     "Display the admin panel"
     return "Admin Page"

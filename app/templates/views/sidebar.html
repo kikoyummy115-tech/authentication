@@ -1,0 +1,79 @@
+<!-- Acess Link for User, Moderator, Admin -->
+
+{% block sidebar %}
+
+<ul class="menu bg-base-200 min-h-full w-60 p-4 text-xs">
+  <!-- Sidebar content here -->
+
+  <li>
+    <a><span class="material-symbols-outlined"> home </span>Home</a>
+  </li>
+  <li>
+    <a><span class="material-symbols-outlined"> dashboard </span>Dashboard</a>
+  </li>
+  <li>
+    <a href="{{ url_for('people') }}"
+      ><span class="material-symbols-outlined"> group </span>People</a
+    >
+  </li>
+
+  <li>
+    <a href="{{ url_for('group_list')}}"
+      ><span class="material-symbols-outlined"> list_alt_add </span>Group
+      List</a
+    >
+  </li>
+
+  <li>
+    <a
+      ><span class="material-symbols-outlined"> manage_accounts </span> Manage
+      Role
+    </a>
+  </li>
+
+  <li>
+    <a><span class="material-symbols-outlined"> docs </span> Report </a>
+  </li>
+
+  <li>
+    <a><span class="material-symbols-outlined"> database </span>Back Up </a>
+  </li>
+  <li class="mt-auto dropdown dropdown-top">
+    <div tabindex="0" role="button" class="m-1">
+      <span class="material-symbols-outlined"> settings </span>
+      Settings
+    </div>
+    <ul
+      tabindex="-1"
+      class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm"
+    >
+      <li>
+        <a>
+          <div class="flex justify-end">
+            <img
+              src="{{ url_for('static', filename='image/image.png' ) }}"
+              class="rounded-full h-6"
+              alt="profile"
+            />
+          </div>
+          Profile</a
+        >
+      </li>
+      <li>
+        <a> <span class="material-symbols-outlined"> help </span>Help</a>
+      </li>
+      <li>
+        <a> <span class="material-symbols-outlined"> call </span>Contact</a>
+      </li>
+
+      <li>
+        <a class="text-red-500">
+          <span class="material-symbols-outlined"> logout </span>
+          Logout</a
+        >
+      </li>
+    </ul>
+  </li>
+</ul>
+
+{% endblock %}

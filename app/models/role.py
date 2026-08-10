@@ -9,9 +9,6 @@ class Role(db.Model):
     users = db.relationship('User', backref='role', lazy='dynamic')
     permissions = db.relationship('Permission', secondary=role_permissions, backref='roles', lazy='select')
     
-    def __repr__(self):
-        return f"<Role {self.name}>"
-    
     def add_permission(self, perm):
         if not self.has_permission(perm):
             self.permissions.append(perm)
@@ -22,7 +19,10 @@ class Role(db.Model):
         
     def reset_permissions(self):
         self.permissions = []
-
         
     def has_permission(self, perm):
         return perm in self.permissions
+    
+    def __repr__(self):
+        return f"<Role {self.name}>"
+    
