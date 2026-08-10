@@ -33,11 +33,15 @@
       class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm"
     >
       <li>
-        <a>
+        <a href="{{ url_for('main.profile') }}">
           <div class="flex justify-end">
             <img
-              src="{{ url_for('static', filename='image/profile.png' ) }}"
-              class="rounded-full h-6"
+              src="{% if  current_user.img_url == 'default.jpg'%}
+                {{ url_for('static', filename='image/profile.png' ) }}
+              {% else %}
+                {{ current_user.img_url}}
+              {% endif %}"
+              class="rounded-full h-8 w-8"
               alt="profile"
             />
           </div>

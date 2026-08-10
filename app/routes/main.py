@@ -15,12 +15,6 @@ def dashboard():
     print(current_user.role_id)
     return render_template('views/dashboard.html')
 
-@main.route('/settings')
-@login_required
-def settings():
-    "Display the user's settings"
-    return "Settings Page"
-
 
 @main.route('/admin')
 @login_required

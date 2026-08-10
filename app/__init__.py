@@ -13,10 +13,10 @@ def create_app():
     login_manager.init_app(app)
     migrate.init_app(app, db)
 
-    from app.routes.auth import auth
-    from app.routes.main import main
+    from app.routes import auth, main
     
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(main)
+
     
     return app

@@ -31,7 +31,6 @@ class User(UserMixin ,db.Model):
     def has_permission(self, perm):
         if self.role is None:
             return False
-        print(self.role.has_permission(perm))
         return self.role.has_permission(perm)
     
     def __repr__(self):
@@ -41,7 +40,6 @@ class User(UserMixin ,db.Model):
 class AnonymousUser(AnonymousUserMixin):
     def can(self):
         return False
-
     def is_administrator(self):
         return False
 
