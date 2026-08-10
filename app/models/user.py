@@ -12,7 +12,8 @@ class User(UserMixin ,db.Model):
     password_hash = db.Column(db.String(256))
     
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
+    img_url = db.Column(db.String(256), default='default.jpg')
+    
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
@@ -26,14 +27,6 @@ class User(UserMixin ,db.Model):
         
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    def has_permission(self, permission_name):
-        if self.role is None:
-            return False
-        permission = Permission.query.filter_by(name=permission_name).first()
-        if permission is None:
-            return False
-        return self.role.has_permission(permission)
     
     def __repr__(self):
         return f"<User {self.username}>"
