@@ -1,7 +1,7 @@
 from flask import render_template
 from app import create_app
 from app.models import User, Role, Permission
-from extenstion import db
+from extension import db
 
 app = create_app()
 

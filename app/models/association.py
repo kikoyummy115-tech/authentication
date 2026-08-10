@@ -1,4 +1,4 @@
-from extenstion import db
+from extension import db
 
 role_permissions = db.Table(
     'role_permissions',

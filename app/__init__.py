@@ -1,6 +1,6 @@
 from flask import Flask
 from config import config
-from extenstion import db, login_manager, migrate
+from extension import db, login_manager, migrate
 from app.models import User, Role, Permission
 
 login_manager.login_view = 'auth.login'

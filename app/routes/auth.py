@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user
-from extenstion import db
+from extension import db
 
 from app.models.user import User
 
@@ -57,5 +57,3 @@ def register():
 def logout():    
     logout_user()  # This will log the user out
     return redirect(url_for('auth.login'))
-
-

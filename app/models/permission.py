@@ -1,4 +1,4 @@
-from extenstion import db
+from extension import db
 
 class Permission(db.Model):
     __tablename__ = 'permissions'

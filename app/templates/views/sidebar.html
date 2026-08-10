@@ -1,5 +1,3 @@
-<!-- Acess Link for User, Moderator, Admin -->
-
 {% block sidebar %}
 
 <ul class="menu bg-base-200 min-h-full w-60 p-4 text-xs">
@@ -9,32 +7,19 @@
     <a><span class="material-symbols-outlined"> home </span>Home</a>
   </li>
   <li>
-    <a><span class="material-symbols-outlined"> dashboard </span>Dashboard</a>
-  </li>
-  <li>
-    <a href="{{ url_for('people') }}"
-      ><span class="material-symbols-outlined"> group </span>People</a
+    <a href="{{ url_for('main.dashboard')}}"
+      ><span class="material-symbols-outlined"> dashboard </span>Dashboard</a
     >
   </li>
 
-  <li>
-    <a href="{{ url_for('group_list')}}"
-      ><span class="material-symbols-outlined"> list_alt_add </span>Group
-      List</a
-    >
-  </li>
-
+  {% if current_user.has_permission('manage_role') %}
   <li>
     <a
       ><span class="material-symbols-outlined"> manage_accounts </span> Manage
       Role
     </a>
   </li>
-
-  <li>
-    <a><span class="material-symbols-outlined"> docs </span> Report </a>
-  </li>
-
+  {% endif %}
   <li>
     <a><span class="material-symbols-outlined"> database </span>Back Up </a>
   </li>
@@ -51,7 +36,7 @@
         <a>
           <div class="flex justify-end">
             <img
-              src="{{ url_for('static', filename='image/image.png' ) }}"
+              src="{{ url_for('static', filename='image/profile.png' ) }}"
               class="rounded-full h-6"
               alt="profile"
             />
@@ -67,7 +52,7 @@
       </li>
 
       <li>
-        <a class="text-red-500">
+        <a href="{{ url_for('auth.logout') }}" class="text-red-500">
           <span class="material-symbols-outlined"> logout </span>
           Logout</a
         >

@@ -1,4 +1,4 @@
-from extenstion import db, login_manager
+from extension import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 
@@ -31,6 +31,7 @@ class User(UserMixin ,db.Model):
     def has_permission(self, perm):
         if self.role is None:
             return False
+        print(self.role.has_permission(perm))
         return self.role.has_permission(perm)
     
     def __repr__(self):

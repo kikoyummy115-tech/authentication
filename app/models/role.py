@@ -1,4 +1,4 @@
-from extenstion import db
+from extension import db
 from .association import role_permissions
 
 class Role(db.Model):
@@ -21,6 +21,8 @@ class Role(db.Model):
         self.permissions = []
         
     def has_permission(self, perm):
+        if isinstance(perm, str):
+            return any(p.name == perm for p in self.permissions)
         return perm in self.permissions
     
     def __repr__(self):
