@@ -2,11 +2,12 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_user, logout_user
 from extension import db
 from app.models.user import User
-
-from app.utils import otp_verification
+from app.utils import otp_verification, password_reset
 import random
 
+
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -85,8 +86,7 @@ def verify_otp():
     
     if request.method == 'POST':
         user_otp = request.form.get('otp', '').strip()
-        
-        print(user_otp)
+    
         # Create and save the new user to Database
         if user_otp and int(user_otp) == session.get('register_otp'): 
             user_date = session.get('register_user')           
@@ -112,18 +112,83 @@ def verify_otp():
             flash('invalid verification code. Please try again.', 'danger')
         
     return render_template('auth/verify_otp.html')
-        
+
+
 @auth.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         user = User.query.filter_by(email=email).first()
-        # Anti-enumeration measure: Always flash success to hide valid vs invalid emails
-        flash('If the email exists, a password reset link has been dispatched.', 'info')
+        
+        flash('If the email exists, a 6-digit reset code has been sent.', 'info')
+
         if user:
-            pass
-        return redirect(url_for('auth.login'))
+            reset_otp = random.randint(100000, 999999)
+            
+            # Store target user ID and OTP in session
+            session['reset_user_id'] = user.id
+            session['reset_otp'] = reset_otp
+            try:
+                password_reset(email=email, otp=reset_otp)
+            except:
+                pass        
+        return redirect(url_for('auth.verify_reset_otp'))
     return render_template('auth/forgot_password.html')
+
+
+
+@auth.route('/verify-reset-otp', methods=['GET', 'POST'])
+def verify_reset_otp():
+    "Verify the 6-digit password reset code"
+    if 'reset_user_id' not in session or 'reset_otp' not in session:
+        flash('Please request a password reset code first.', 'warning')
+        return redirect(url_for('auth.forgot_password'))
+
+    if request.method == 'POST':
+        user_otp = request.form.get('otp', '').strip()
+
+        if user_otp and int(user_otp) == session.get('reset_otp'):
+            # Code matches; unlock password reset access marker
+            session['reset_verified'] = True
+            session.pop('reset_otp', None)  # Consume code so it cannot be reused
+            return redirect(url_for('auth.reset_password'))
+        else:
+            flash('Invalid reset code. Please try again.', 'danger')
+
+    return render_template('auth/verify_reset_otp.html')
+
+
+@auth.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    "Set the new password after OTP is successfully verified"
+    if not session.get('reset_verified') or 'reset_user_id' not in session:
+        flash('Unauthorized access. Please verify your OTP code first.', 'danger')
+        return redirect(url_for('auth.forgot_password'))
+
+    if request.method == 'POST':
+        new_password = request.form.get('password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+
+        if not new_password or new_password != confirm_password:
+            flash('Passwords do not match or are empty.', 'danger')
+            return render_template('auth/reset_password.html')
+
+        # Retrieve user and update password
+        user = User.query.get(session['reset_user_id'])
+        if user:
+            user.password = new_password  # Triggers hashing function inside your model
+            db.session.commit()
+            flash('Your password has been reset successfully. Please login.', 'success')
+        else:
+            flash('User account not found.', 'danger')
+
+        # Clear remaining reset variables from session
+        session.pop('reset_user_id', None)
+        session.pop('reset_verified', None)
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/reset_password.html')
+
 
 @auth.route('/logout')
 def logout():    

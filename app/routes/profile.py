@@ -1,19 +1,18 @@
 import cloudinary.uploader
-
 from flask import redirect, render_template, url_for, request, flash
 from flask_login import login_required, current_user
 from datetime import datetime
-
 from app.models import User
 from extension import db
-
 from app.routes import main
+
 
 @main.route('/profile', methods=['GET'])
 @login_required
 def profile():
     "View the profile page for the current user."
     return render_template('views/profile.html')
+
 
 @main.route('/profile/upload-image', methods=['POST'])
 @login_required
@@ -71,6 +70,7 @@ def remove_image():
 
     return redirect(url_for('main.profile'))
 
+
 @main.route('/profile/edit', methods=["GET", "POST"])
 @login_required
 def edit_profile():
@@ -113,6 +113,7 @@ def edit_profile():
             flash("Could not save your changes. Try again", "error")
 
     return render_template('forms/edit_profile.html')
+
 
 @main.route('/profile/change-password', methods=['GET', 'POST'])
 @login_required

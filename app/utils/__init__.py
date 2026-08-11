@@ -1,1 +1,1 @@
-from .email_sender import otp_verification
+from .email_sender import otp_verification, password_reset

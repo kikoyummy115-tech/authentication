@@ -44,8 +44,12 @@
           placeholder="Password"
           name="password"
         />
-
-        <button class="btn btn-primary mt-4" type="submit">Login</button>
+        <a
+          class="flex justify-end font-semibold text-slate-600"
+          href="{{ url_for('auth.forgot_password')}}"
+          >Forget password?</a
+        >
+        <button class="btn btn-primary" type="submit">Login</button>
 
         <a
           class="flex justify-center font-semibold text-slate-600"

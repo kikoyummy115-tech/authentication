@@ -11,10 +11,15 @@ def otp_verification(email, otp):
     msg.body = f'Your 6 digit verification code: {otp}'
     mail.send(msg)
 
-
-
+def password_reset(email, otp):
+    msg = Message(
+        'Password Reset Code',
+        sender="no-reply@gmail.com",
+        recipients=[email]
+    )
+    msg.body = f'Your 6 digit password reset code: {otp}'
+    mail.send(msg)
 #  Simple OTP verification
-
 
 # def otp_verification():
     
