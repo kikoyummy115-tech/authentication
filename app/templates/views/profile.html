@@ -9,7 +9,7 @@ content %}
         <h1 class="text-xl font-semibold">Your photo</h1>
 
         <img
-          src="{% if  current_user.img_url == 'default.jpg'%}
+          src="{% if  current_user.img_url == None%}
                 {{ url_for('static', filename='image/profile.png' ) }}
               {% else %}
                 {{ current_user.img_url}}
@@ -17,19 +17,35 @@ content %}
           class="h-40 w-40 shrink-0 rounded-full"
           alt="profile"
         />
-        <p class="text-sm p-2 border-1 rounded-sm inline">
-          Role : {{ current_user.role.name }}
+        <p class="text-sm m-2 rounded-sm inline font-semibold">
+          Role : {{ current_user.role.name[0].upper() +
+          current_user.role.name[1:] }}
         </p>
         <legend class="text-xs p-2">
           Change Photo <label class="label text-xs">Max size 2MB</label>
         </legend>
         <div class="flex flex-col gap-4 md:flex-row">
-          <form>
-            <input type="file" class="file-input file-input-sm" />
+          <!-- CRITICAL: Added enctype="multipart/form-data" so the browser sends actual files instead of text -->
+          <form
+            action="{{ url_for('main.upload_image') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="flex md:flex-row gap-2"
+          >
+            <input
+              type="file"
+              class="file-input file-input-sm"
+              name="file"
+              accept="*/*"
+              required
+            />
+            <button type="submit" class="btn btn-outline btn-sm">Upload</button>
           </form>
 
-          <form>
-            <button class="btn bg-red-500 text-white btn-sm">Remove</button>
+          <form action="{{ url_for('main.remove_image')}}" method="POST">
+            <button type="submit" class="btn bg-red-500 text-white btn-sm">
+              Remove
+            </button>
           </form>
         </div>
       </div>

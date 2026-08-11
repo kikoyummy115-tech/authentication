@@ -8,8 +8,8 @@ def permission_required(permission_name):
         def decorated_function(*args, **kwargs):
             # Mock Auth: Extracting user from query string for demonstration
             # In production, use: current_user from flask_login
-            username = request.args.get('user')
-            current_user = User.query.filter_by(username=username).first()
+            email = request.args.get('user')
+            current_user = User.query.filter_by(email=email).first()
             
             if not current_user:
                 abort(401, description="Authentication required.")

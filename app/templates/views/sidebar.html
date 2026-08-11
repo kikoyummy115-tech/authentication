@@ -20,9 +20,7 @@
     </a>
   </li>
   {% endif %}
-  <li>
-    <a><span class="material-symbols-outlined"> database </span>Back Up </a>
-  </li>
+
   <li class="mt-auto dropdown dropdown-top">
     <div tabindex="0" role="button" class="m-1">
       <span class="material-symbols-outlined"> settings </span>
@@ -36,7 +34,7 @@
         <a href="{{ url_for('main.profile') }}">
           <div class="flex justify-end">
             <img
-              src="{% if  current_user.img_url == 'default.jpg'%}
+              src="{% if  current_user.img_url == None %}
                 {{ url_for('static', filename='image/profile.png' ) }}
               {% else %}
                 {{ current_user.img_url}}
@@ -49,10 +47,14 @@
         >
       </li>
       <li>
-        <a> <span class="material-symbols-outlined"> help </span>Help</a>
+        <a href="{{ url_for('main.help')}}">
+          <span class="material-symbols-outlined"> help </span>Help</a
+        >
       </li>
       <li>
-        <a> <span class="material-symbols-outlined"> call </span>Contact</a>
+        <a href="{{ url_for('main.contact')}}">
+          <span class="material-symbols-outlined"> call </span>Contact</a
+        >
       </li>
 
       <li>

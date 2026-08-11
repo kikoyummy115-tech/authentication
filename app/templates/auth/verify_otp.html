@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% block title %}
-    <title>Register</title>
+    <title>Verify Otp</title>
     {% endblock %}
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5"
@@ -25,40 +25,33 @@
       </div>
       {% endwith %} {% block content %} {% endblock %}
     </div>
-
     <div class="flex h-screen items-center justify-center">
       <form
-        action="{{url_for('auth.register')}}"
+        action="{{ url_for('auth.verify_otp')}}"
         method="POST"
         class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4"
       >
-        <h1 class="text-lg font-semibold">Register New Account</h1>
-        <label class="label">Username</label>
-        <input
-          type="text"
-          class="input"
-          placeholder="Username"
-          name="username"
-        />
-
-        <label class="label">Email</label>
-        <input type="email" class="input" placeholder="Email" name="email" />
-
-        <label class="label">Password</label>
-        <input
-          type="password"
-          class="input"
-          placeholder="Password"
-          name="password"
-        />
-
-        <button class="btn btn-primary mt-4" type="submit">Register</button>
-
-        <a
-          class="flex justify-center font-semibold text-slate-600"
-          href="{{ url_for('auth.login')}}"
-          >Already have an account? Login here</a
-        >
+        <h1 class="font-semibold text-lg">Enter Verification Code</h1>
+        <label class="otp">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <input
+            type="text"
+            autocomplete="one-time-code"
+            inputmode="numeric"
+            maxlength="6"
+            minlength="6"
+            pattern="\d{6}"
+            required
+            id="otp"
+            name="otp"
+          />
+        </label>
+        <button type="submit" class="btn btn-primary mt-4">Verify</button>
       </form>
     </div>
   </body>
