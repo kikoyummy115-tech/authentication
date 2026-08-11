@@ -14,6 +14,9 @@ class User(UserMixin ,db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     img_url = db.Column(db.String(256), default='default.jpg')
     
+    gender = db.Column(db.String(20), nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True) 
+    
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
@@ -27,7 +30,7 @@ class User(UserMixin ,db.Model):
         
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+     
     def has_permission(self, perm):
         if self.role is None:
             return False

@@ -25,7 +25,18 @@
       <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <!-- Page content here -->
-        <div class="col-span-1">{% block content %} {% endblock %}</div>
+
+        <div class="col-span-1">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          <div id="toast-container">
+            {% for category, message in messages %}
+            <div class="fixed toast-card alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endwith %} {% block content %} {% endblock %}
+        </div>
 
         <label
           for="my-drawer-3"

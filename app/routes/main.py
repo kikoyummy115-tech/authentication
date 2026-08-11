@@ -18,7 +18,7 @@ def dashboard():
 
 @main.route('/admin')
 @login_required
-@permission_required('admin')
+# @permission_required(['admin'])
 def admin():
     "Display the admin panel"
     return "Admin Page"

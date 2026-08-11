@@ -11,8 +11,8 @@ def login():
     "Login in user required username and password"
 
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form.get('email').strip()
+        password = request.form.get('password').strip()
 
         # Add login logic here
         user = User.query.filter_by(email=email).first()
@@ -35,10 +35,10 @@ def register():
     
     if request.method == 'POST':
         # Handle registration logic here
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        
+        username = request.form.get('username').strip() 
+        email = request.form.get('email').strip()
+        password = request.form.get('password').strip()
+
         # You would typically add validation and user creation logic here
         if not username or not email or not password:
             flash('Please fill out all fields', 'danger')
@@ -51,6 +51,9 @@ def register():
         flash('Registration successful!', 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html')
+
+
+
 
 
 @auth.route('/logout')
