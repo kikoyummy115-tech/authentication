@@ -14,6 +14,7 @@ def profile():
     return render_template('views/profile.html')
 
 
+
 @main.route('/profile/upload-image', methods=['POST'])
 @login_required
 def upload_image():

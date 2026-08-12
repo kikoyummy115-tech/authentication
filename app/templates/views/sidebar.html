@@ -14,7 +14,7 @@
 
   {% if current_user.has_permission('manage_role') %}
   <li>
-    <a
+    <a href="{{ url_for('main.manage_role')}}"
       ><span class="material-symbols-outlined"> manage_accounts </span> Manage
       Role
     </a>

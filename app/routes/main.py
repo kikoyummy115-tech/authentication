@@ -15,10 +15,8 @@ def dashboard():
     print(current_user.role_id)
     return render_template('views/dashboard.html')
 
-
 @main.route('/admin')
 @login_required
-# @permission_required(['admin'])
 def admin():
     "Display the admin panel"
     return "Admin Page"
