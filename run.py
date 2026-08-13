@@ -1,4 +1,6 @@
 from flask import render_template
+from flask_login import current_user
+from datetime import datetime, timezone
 from app import create_app
 from app.models import User, Role, Permission
 from extension import db
@@ -13,6 +15,13 @@ def make_shell_context():
         Role=Role,
         Permission=Permission,
     )
+
+
+@app.before_request
+def before_request():
+     if current_user.is_authenticated:
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
 
 with app.app_context():
     db.create_all()

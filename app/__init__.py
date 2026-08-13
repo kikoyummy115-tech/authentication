@@ -15,7 +15,7 @@ def create_app():
         cloud_name=app.config['CLOUDINARY_CLOUD_NAME'],
         api_key=app.config['CLOUDINARY_API_KEY'],
         api_secret=app.config['CLOUDINARY_API_SECRET'],
-        secure=True # Ensures asset URLs are returned with HTTPS
+        secure=True
     )
 
     db.init_app(app)

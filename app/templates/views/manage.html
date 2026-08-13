@@ -96,13 +96,95 @@
 
           <td>{{ user.email }}</td>
           <td class="hidden md:table-cell">{{ user.gender }}</td>
-          <td class="hidden md:table-cell text-green-500">Online</td>
-          <td class="hidden md:table-cell">{{ user.role.name }}</td>
-          <td class="hidden md:table-cell link-hover">
-            <a>View profile</a>
-          </td>
           <td class="hidden md:table-cell">
-            <span class="material-symbols-outlined"> more_vert </span>
+            {% if user.is_online() %}
+            <span class="text-green-500">Online</span> {% else %}
+            <span class="text-red-500">Offline</span> {% endif %}
+          </td>
+          <td class="hidden md:table-cell">{{ user.role.name }}</td>
+          <td class="hidden md:table-cell">
+            <div class="drawer drawer-end">
+              <!-- 1. Append user.id to the ID -->
+              <input
+                id="my-drawer-{{ user.id }}"
+                type="checkbox"
+                class="drawer-toggle"
+              />
+
+              <div class="drawer-content">
+                <!-- 2. Append user.id to the for attribute -->
+                <label
+                  for="my-drawer-{{ user.id }}"
+                  class="drawer-button btn btn-outline btn-xs"
+                >
+                  <span class="material-symbols-outlined"> more_vert </span>
+                </label>
+              </div>
+
+              <div class="drawer-side">
+                <!-- 3. Append user.id to the for attribute here too -->
+                <label
+                  for="my-drawer-{{ user.id }}"
+                  aria-label="close sidebar"
+                  class="drawer-overlay"
+                ></label>
+
+                <div class="menu bg-base-200 min-h-full w-80 p-4">
+                  <div class="p-2 m-2 bg-base-300">
+                    <img
+                      src="{% if user.img_url == None %} {{ url_for('static', filename='image/profile.png' ) }} {% else %} {{ user.img_url}} {% endif %}"
+                      class="rounded-full h-40 w-40"
+                      alt="profile"
+                    />
+
+                    <fieldset class="fieldset p-4">
+                      <p class="">Username</p>
+                      <p class="text-sm border-1 p-2 rounded-sm">
+                        {{ user.username }}
+                      </p>
+                      <p class="">Email</p>
+                      <p class="text-sm border-1 p-2 rounded-sm">
+                        {{ user.email }}
+                      </p>
+                      <p class="">Gender</p>
+                      <p class="text-sm border-1 p-2 rounded-sm">
+                        {% if user.gender %} {{ user.gender }} {% else %} Not
+                        specified {% endif %}
+                      </p>
+                      <p class="">Date of Birth</p>
+                      <p class="text-sm border-1 p-2 rounded-sm">
+                        {% if user.date_of_birth %} {{ user.date_of_birth }} {%
+                        else %} Not specified {% endif %}
+                      </p>
+                    </fieldset>
+                    <form
+                      action="{{ url_for('main.assign_role', user_id=user.id)}}"
+                      class="flex flex-row gap-2 p-2 m-2"
+                      method="POST"
+                    >
+                      <div>
+                        <select
+                          class="select select-neutral text-xs w-full"
+                          name="role"
+                        >
+                          <option disabled selected>Select role</option>
+                          {% for role in roles %}
+                          <!-- prettier-ignore -->
+                          <option value="{{ role.name }}" {% if selected_role == role.name %}selected{% endif %}>
+            {{ role.name }}
+          </option>
+                          {% endfor %}
+                          <!-- prettier-ignore-end -->
+                        </select>
+                      </div>
+                      <button class="btn btn-outline" type="submit">
+                        Save change
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
         {% endfor %}

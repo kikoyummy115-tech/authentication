@@ -148,7 +148,7 @@ def assign_permission(role_id, perm_id):
     return redirect(url_for('main.manage_permission', role_id=role_id))
 
 
-@main.route('/manage-role/permission/<role_id>unassigned/<perm_id>', methods=["POST"])
+@main.route('/manage-role/permission/<role_id>/unassigned/<perm_id>', methods=["POST"])
 @login_required
 @permission_required(['manage_role'])
 def unassign_permission(role_id, perm_id):
@@ -159,4 +159,23 @@ def unassign_permission(role_id, perm_id):
         db.session.commit()
         flash(f"Success fully unassigned {perm.name}", 'success')
     return redirect(url_for('main.manage_permission', role_id=role_id))
+
+
+@main.route('/manage-role/permission/assign-role/<user_id>', methods=['POST'])
+def assign_role(user_id):
+    user = User.query.get_or_404(user_id)
+    selected_role_name = request.form.get('role')
     
+    if not selected_role_name:
+        flash('Please select a valid role.', 'error')
+        return redirect(url_for('main.manage_role'))
+        
+    role = Role.query.filter_by(name=selected_role_name).first()
+    
+    if role:
+        user.role_id = role.id 
+        db.session.commit()
+        flash(f'Successfully updated {user.username} to {role.name}.', 'success')
+    else:
+        flash('Selected role does not exist.', 'error')
+    return redirect(url_for('main.manage_role'))

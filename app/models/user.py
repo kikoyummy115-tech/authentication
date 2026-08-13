@@ -1,6 +1,8 @@
 from extension import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
+from datetime import timezone, datetime
+
 
 from .permission import Permission
 
@@ -17,8 +19,12 @@ class User(UserMixin ,db.Model):
     gender = db.Column(db.String(20), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True) 
     
+    last_seen = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
 
     @property
     def password(self):
@@ -35,6 +41,14 @@ class User(UserMixin ,db.Model):
         if self.role is None:
             return False
         return self.role.has_permission(perm)
+    
+    def is_online(self):
+        if self.last_seen is None:
+            return False
+        current_time = datetime.now(timezone.utc)
+        time_difference = (current_time - self.last_seen.replace(tzinfo=timezone.utc)).total_seconds()
+        return time_difference < 300  
+
     
     def __repr__(self):
         return f"<User {self.username}>"
